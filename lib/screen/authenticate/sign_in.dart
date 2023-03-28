@@ -34,7 +34,8 @@ class _SignInState extends State<SignIn> {
                 print('Error singing in');
               } else {
                 print('Sign in');
-                print(result);
+                // Тут вызываем result.uid и получаем uid в консоле
+                print(result.uid);
               }
             },
         ),
