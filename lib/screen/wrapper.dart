@@ -9,6 +9,6 @@ class Wrapper extends StatelessWidget {
   Widget build(BuildContext context) {
 
     // Вернуть или экран home или authenticate
-    return Home();
+    return Authenticate();
   }
 }
