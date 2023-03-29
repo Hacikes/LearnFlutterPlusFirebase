@@ -14,9 +14,13 @@ class Wrapper extends StatelessWidget {
     // в переменную user записываем данные типа User1 и получаем их в context
     // крч получаем доступ к пользовательским данным от провайдера
     final user = Provider.of<User1?>(context);
-    print(user);
 
-    // Вернуть или экран home или authenticate
-    return Authenticate();
+    // Если user null идём на экран аутентификации
+    // Если у user есть uid, то переходим на домашний экран
+    if (user == null){
+      return Authenticate();
+    } else {
+      return Home();
+    }
   }
 }
