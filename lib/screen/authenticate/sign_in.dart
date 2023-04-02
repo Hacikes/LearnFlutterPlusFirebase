@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:learning_flutter_and_firebase/services/auth.dart';
 
 class SignIn extends StatefulWidget {
-  const SignIn({Key? key}) : super(key: key);
+
+  // Передаём свойсто toggleView для того, чтобы понимать какой экран перключать
+  // крч добавляем его в конструктор экземпляра класса
+  final Function toggleView;
+  SignIn({required this.toggleView});
 
   @override
-  State<SignIn> createState() => _SignInState();
+  _SignInState createState() => _SignInState();
 }
 
 class _SignInState extends State<SignIn> {
@@ -25,6 +29,17 @@ class _SignInState extends State<SignIn> {
         backgroundColor: Colors.brown[400],
         elevation: 0.0,
         title: Text('Sign in to app'),
+        //
+        actions: <Widget>[
+          ElevatedButton.icon(
+            icon: Icon(Icons.person),
+              label: Text('Register'),
+              onPressed: () {
+              // использем функцию для переключения вида
+                widget.toggleView();
+              },
+          )
+        ],
       ),
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),

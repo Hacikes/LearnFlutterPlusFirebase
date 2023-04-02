@@ -11,11 +11,25 @@ class Authenticate extends StatefulWidget {
 }
 
 class _AuthenticateState extends State<Authenticate> {
+
+  // проверка какой экран нам показывать
+  bool showSignIn = true;
+  // Логика какой экран возвращать
+  // Логика такая. Когда мы сначала попадаем на экран регистрации
+  // и когда нажимаем на кнопку register мы запускаем функцию toggleView
+  // снова и устанавливаем значение false и переключается экран и действует это
+  // в обе стороны
+  void toggleView() {
+    setState(() =>  showSignIn = !showSignIn);
+  }
+
+  // возвращаем один из экранов
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // Вызываем виджет Register для аутентификации
-      child: Register(),
-    );
+    if (showSignIn) {
+      return SignIn(toggleView: toggleView);
+    } else {
+      return Register(toggleView: toggleView);
+    }
   }
 }

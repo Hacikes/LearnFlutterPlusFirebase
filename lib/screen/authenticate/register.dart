@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:learning_flutter_and_firebase/services/auth.dart';
 
 class Register extends StatefulWidget {
-  const Register({Key? key}) : super(key: key);
+
+  // Передаём свойсто toggleView для того, чтобы понимать какой экран перключать
+  // крч добавляем его в конструктор экземпляра класса
+  final Function toggleView;
+  Register({required this.toggleView});
 
   @override
   State<Register> createState() => _RegisterState();
@@ -25,6 +29,15 @@ class _RegisterState extends State<Register> {
         backgroundColor: Colors.brown[400],
         elevation: 0.0,
         title: Text('Register in to app'),
+        actions: <Widget>[
+          ElevatedButton.icon(
+            icon: Icon(Icons.person),
+            label: Text('Sign In'),
+            onPressed: () {
+              widget.toggleView();
+            },
+          )
+        ],
       ),
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
