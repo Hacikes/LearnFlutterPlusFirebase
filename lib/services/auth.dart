@@ -46,8 +46,19 @@ class AuthService {
 
 //----------------------------------------------------------------------------------------------
 // register with email/password
-
-
+  Future registerWithEmailAndPassword (String email, String password) async {
+    try{
+      // эта функция после того, как ей придут email и пароль попытается создать пользователями с этими кредами
+      // и если получится она успешно вернёт пользователя и его uid, как мы и объявили в user.dart
+      UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      User? user = result.user;
+      //Возвращаем user в поток авторизации пользователей, который мы сделали выше
+      return _userFromFirebaseUser(user);
+    } catch(e){
+      print(e.toString());
+      return null;
+    }
+  }
 
 //----------------------------------------------------------------------------------------------
 // sign out

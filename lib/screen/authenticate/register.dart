@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:learning_flutter_and_firebase/screen/authenticate/sign_in.dart';
 import 'package:learning_flutter_and_firebase/services/auth.dart';
 
 class Register extends StatefulWidget {
@@ -15,10 +16,13 @@ class Register extends StatefulWidget {
 // Создаём экзмепляр класса AuthService
 // Будем использовать в будующем
 final AuthService _auth = AuthService();
+// Валидация логина и пароля
+final _formKey = GlobalKey<FormState>();
 
 // Переменные для состояние логина и пароля
 String email = '';
 String password = '';
+String error = '';
 
 class _RegisterState extends State<Register> {
   @override
@@ -42,11 +46,16 @@ class _RegisterState extends State<Register> {
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
         child: Form(
+          // поможет остележить форму и её состояние
+          key: _formKey,
           child: Column(
             children: <Widget>[
               SizedBox(height: 20.0,),
               // Тут указываем, что произойдёт, когда поле формы изменится
               TextFormField(
+                // Валидация того, я вляется ли поле пустым
+                // возвращаем сообщение если поле пустое, иначе возвращаем null
+                validator: (val) => val!.isEmpty ? 'Enter an email': null,
                 // Каждый раз, когда значение в форме меняется
                 // будет запускаться эта функция
                 // крч форма логина
@@ -58,6 +67,9 @@ class _RegisterState extends State<Register> {
               SizedBox(height: 20.0,),
               // Форма логина
               TextFormField(
+                // Валидация того, я вляется ли поле пустым
+                // возвращаем сообщение если поле пустое, иначе возвращаем null
+                validator: (val) => val!.length < 6 ? 'Enter an password 6 + char long': null,
                 // заменяет ввод на точки, как во всех вводах пароля
                 obscureText: true,
                 onChanged: (val){
@@ -67,8 +79,12 @@ class _RegisterState extends State<Register> {
               SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: () async {
-                  print(email);
-                  print(password);
+                  if (_formKey.currentState!.validate()) {
+                    dynamic result = await _auth .registerWithEmailAndPassword(email, password);
+                    if (result == null){
+                      setState(() => error = 'Please supply a valid email');
+                    }
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.pink[400]
@@ -78,6 +94,12 @@ class _RegisterState extends State<Register> {
                   style: TextStyle(color:Colors.white),
                 ),
               ),
+              SizedBox(height: 20,),
+              // Печатаем текст ошибки, что email пустой
+              Text(
+                error,
+                style: TextStyle(color: Colors.red, fontSize: 14.0),
+              )
             ],
           ),
         ),
