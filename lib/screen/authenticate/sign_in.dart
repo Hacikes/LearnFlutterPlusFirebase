@@ -16,10 +16,13 @@ class _SignInState extends State<SignIn> {
 
   // Создаём экзмепляр класса AuthService
   final AuthService _auth = AuthService();
+  // Валидация логина и пароля
+  final _formKey = GlobalKey<FormState>();
 
   // Переменные для состояние логина и пароля
   String email = '';
   String password = '';
+  String error = '';
 
   @override
   Widget build(BuildContext context) {
@@ -44,11 +47,14 @@ class _SignInState extends State<SignIn> {
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
         child: Form(
+          // поможет остележить форму и её состояние
+          key: _formKey,
           child: Column(
             children: <Widget>[
               SizedBox(height: 20.0,),
               // Тут указываем, что произойдёт, когда поле формы изменится
               TextFormField(
+                validator: (val) => val!.isEmpty ? 'Enter an email': null,
                 // Каждый раз, когда значение в форме меняется
                 // будет запускаться эта функция
                 // крч форма логина
@@ -60,6 +66,7 @@ class _SignInState extends State<SignIn> {
               SizedBox(height: 20.0,),
               // Форма логина
               TextFormField(
+                validator: (val) => val!.length < 6 ? 'Enter an password 6 + char long': null,
                 // заменяет ввод на точки, как во всех вводах пароля
                 obscureText: true,
                 onChanged: (val){
@@ -69,8 +76,12 @@ class _SignInState extends State<SignIn> {
               SizedBox(height: 20.0),
               ElevatedButton(
                   onPressed: () async {
-                    print(email);
-                    print(password);
+                    if (_formKey.currentState!.validate()) {
+                      dynamic result = await _auth.signInWithEmailAndPassword(email, password);
+                      if (result == null){
+                        setState(() => error = 'Could not Sign In those credentials');
+                      }
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.pink[400]
@@ -80,6 +91,12 @@ class _SignInState extends State<SignIn> {
                       style: TextStyle(color:Colors.white),
                   ),
               ),
+              SizedBox(height: 12.0,),
+              // Печатаем текст ошибки, что email пустой
+              Text(
+                error,
+                style: TextStyle(color: Colors.red, fontSize: 14.0),
+              )
             ],
           ),
         ),

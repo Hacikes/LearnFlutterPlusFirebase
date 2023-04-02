@@ -18,6 +18,7 @@ class AuthService {
 //----------------------------------------------------------------------------------------------
 
   // Поток авторизации пользователей
+  // то есть ели этот пользователь уже зареган, то мы можем по нему войти
   Stream<User1?> get user {
     return _auth.authStateChanges()
         .map((user) => _userFromFirebaseUser(user));
@@ -41,7 +42,19 @@ class AuthService {
 
 //----------------------------------------------------------------------------------------------
 // sign in with email/password
-
+  Future signInWithEmailAndPassword (String email, String password) async {
+    try{
+      // эта функция после того, как ей придут email и пароль попытается создать пользователями с этими кредами
+      // и если получится она успешно вернёт пользователя и его uid, как мы и объявили в user.dart
+      UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      User? user = result.user;
+      //Возвращаем user в поток авторизации пользователей, который мы сделали выше
+      return _userFromFirebaseUser(user);
+    } catch(e){
+      print(e.toString());
+      return null;
+    }
+  }
 
 
 //----------------------------------------------------------------------------------------------

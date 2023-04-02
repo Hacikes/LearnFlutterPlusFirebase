@@ -94,7 +94,7 @@ class _RegisterState extends State<Register> {
                   style: TextStyle(color:Colors.white),
                 ),
               ),
-              SizedBox(height: 20,),
+              SizedBox(height: 12.0,),
               // Печатаем текст ошибки, что email пустой
               Text(
                 error,
