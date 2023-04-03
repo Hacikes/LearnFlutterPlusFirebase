@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:learning_flutter_and_firebase/screen/authenticate/sign_in.dart';
 import 'package:learning_flutter_and_firebase/services/auth.dart';
 import 'package:learning_flutter_and_firebase/shared/constant.dart';
+import 'package:learning_flutter_and_firebase/shared/loading.dart';
 
 class Register extends StatefulWidget {
 
@@ -19,6 +20,8 @@ class Register extends StatefulWidget {
 final AuthService _auth = AuthService();
 // Валидация логина и пароля
 final _formKey = GlobalKey<FormState>();
+// Для состояния, когда нужна загрузка
+bool loading = false;
 
 // Переменные для состояние логина и пароля
 String email = '';
@@ -28,7 +31,7 @@ String error = '';
 class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ?  Loading() : Scaffold(
       backgroundColor: Colors.brown[100],
       appBar: AppBar(
         backgroundColor: Colors.brown[400],
@@ -83,9 +86,14 @@ class _RegisterState extends State<Register> {
               ElevatedButton(
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
+                    // Устанавливаем состояние экрана загрузки, когда нажали на кнопку Register
+                    setState(() => loading = true);
                     dynamic result = await _auth .registerWithEmailAndPassword(email, password);
                     if (result == null){
-                      setState(() => error = 'Please supply a valid email');
+                      setState(() { error = 'Please supply a valid email';
+                      // Если будет ошибка, то есть ответ = null, то переводим состояние экрана загрузки в false
+                      loading = false;
+                      });
                     }
                   }
                 },

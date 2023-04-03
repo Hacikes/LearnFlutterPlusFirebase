@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:learning_flutter_and_firebase/services/auth.dart';
 import 'package:learning_flutter_and_firebase/shared/constant.dart';
+import 'package:learning_flutter_and_firebase/shared/loading.dart';
 
 class SignIn extends StatefulWidget {
 
@@ -19,6 +20,8 @@ class _SignInState extends State<SignIn> {
   final AuthService _auth = AuthService();
   // Валидация логина и пароля
   final _formKey = GlobalKey<FormState>();
+  // Для состояния, когда нужна загрузка
+  bool loading = false;
 
   // Переменные для состояние логина и пароля
   String email = '';
@@ -27,7 +30,8 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    // Если loading = true, вернуть экран загрузки, иначе экран входа
+    return loading ?  Loading() : Scaffold(
       backgroundColor: Colors.brown[100],
       appBar: AppBar(
         backgroundColor: Colors.brown[400],
@@ -80,9 +84,15 @@ class _SignInState extends State<SignIn> {
               ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
+                      // Устанавливаем состояние экрана загрузки, когда нажали на кнопку Sign In
+                      setState(() => loading = true);
                       dynamic result = await _auth.signInWithEmailAndPassword(email, password);
                       if (result == null){
-                        setState(() => error = 'Could not Sign In those credentials');
+                        setState(() {
+                          error = 'Could not Sign In those credentials';
+                          // Если будет ошибка, то есть ответ = null, то переводим состояние экрана загрузки в false
+                          loading = false;
+                        });
                       }
                     }
                   },
