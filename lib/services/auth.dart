@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:learning_flutter_and_firebase/models/user.dart';
+import 'package:learning_flutter_and_firebase/services/database.dart';
 
 class AuthService {
   // в _auth _ означает, что мы можем использовать эту переменную только внутри этого файла
@@ -65,6 +66,8 @@ class AuthService {
       // и если получится она успешно вернёт пользователя и его uid, как мы и объявили в user.dart
       UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       User? user = result.user;
+      // Создаём новый документ для пользователя у которого есть uid
+      String debug = await DatabaseService(uid: user!.uid).updateUserData('0', 'new crew member', 100);
       //Возвращаем user в поток авторизации пользователей, который мы сделали выше
       return _userFromFirebaseUser(user);
     } catch(e){
