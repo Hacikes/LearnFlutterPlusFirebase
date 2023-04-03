@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:learning_flutter_and_firebase/screen/authenticate/sign_in.dart';
 import 'package:learning_flutter_and_firebase/services/auth.dart';
+import 'package:learning_flutter_and_firebase/shared/constant.dart';
 
 class Register extends StatefulWidget {
 
@@ -53,6 +54,7 @@ class _RegisterState extends State<Register> {
               SizedBox(height: 20.0,),
               // Тут указываем, что произойдёт, когда поле формы изменится
               TextFormField(
+                decoration: textInputDecoration.copyWith(hintText: 'Email'),
                 // Валидация того, я вляется ли поле пустым
                 // возвращаем сообщение если поле пустое, иначе возвращаем null
                 validator: (val) => val!.isEmpty ? 'Enter an email': null,
@@ -67,6 +69,7 @@ class _RegisterState extends State<Register> {
               SizedBox(height: 20.0,),
               // Форма логина
               TextFormField(
+                decoration: textInputDecoration.copyWith(hintText: 'Password'),
                 // Валидация того, я вляется ли поле пустым
                 // возвращаем сообщение если поле пустое, иначе возвращаем null
                 validator: (val) => val!.length < 6 ? 'Enter an password 6 + char long': null,

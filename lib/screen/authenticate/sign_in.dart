@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:learning_flutter_and_firebase/services/auth.dart';
+import 'package:learning_flutter_and_firebase/shared/constant.dart';
 
 class SignIn extends StatefulWidget {
 
@@ -54,6 +55,7 @@ class _SignInState extends State<SignIn> {
               SizedBox(height: 20.0,),
               // Тут указываем, что произойдёт, когда поле формы изменится
               TextFormField(
+                decoration: textInputDecoration.copyWith(hintText: 'Email'),
                 validator: (val) => val!.isEmpty ? 'Enter an email': null,
                 // Каждый раз, когда значение в форме меняется
                 // будет запускаться эта функция
@@ -66,6 +68,7 @@ class _SignInState extends State<SignIn> {
               SizedBox(height: 20.0,),
               // Форма логина
               TextFormField(
+                decoration: textInputDecoration.copyWith(hintText: 'Password'),
                 validator: (val) => val!.length < 6 ? 'Enter an password 6 + char long': null,
                 // заменяет ввод на точки, как во всех вводах пароля
                 obscureText: true,
