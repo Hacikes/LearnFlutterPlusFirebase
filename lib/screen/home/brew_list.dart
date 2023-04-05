@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:learning_flutter_and_firebase/models/brew.dart';
+import 'package:learning_flutter_and_firebase/screen/home/brew_title.dart';
 
 class BrewList extends StatefulWidget {
   const BrewList({Key? key}) : super(key: key);
@@ -26,7 +27,12 @@ class _BrewListState extends State<BrewList> {
         print(brew?.strength);
       });
     }
-    return Container();
+    return ListView.builder(
+        itemCount: brews?.length,
+        itemBuilder: (context, index) {
+          return BrewTitle(brew: brews![index]);
+        }
+    );
   }
 }
 
