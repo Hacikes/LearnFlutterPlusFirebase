@@ -3,9 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseService {
 
-  final String uid;
+  final String? uid;
   // консруктор для передачи uid
-  DatabaseService({required this.uid});
+  DatabaseService({ this.uid});
 
   // Ссылка на колекцию в бд для получения и изменения данных
   final CollectionReference brewCollection = FirebaseFirestore.instance.collection('brew');
@@ -19,4 +19,13 @@ class DatabaseService {
       'strength': strength,
     });
   }
+
+  // Получение потока данных brew
+  Stream<QuerySnapshot>? get brews {
+    // Возвращаем снимок коллекции данных из бд
+    return brewCollection.snapshots();
+  }
+
+
+
 }

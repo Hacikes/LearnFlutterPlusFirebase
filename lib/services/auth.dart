@@ -75,7 +75,6 @@ class AuthService {
       return null;
     }
   }
-
 //----------------------------------------------------------------------------------------------
 // sign out
   Future signOut() async{
@@ -86,6 +85,4 @@ class AuthService {
       return null;
     }
   }
-
-
 }
