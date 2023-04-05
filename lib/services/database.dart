@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:learning_flutter_and_firebase/models/brew.dart';
 
 
 class DatabaseService {
@@ -20,10 +21,23 @@ class DatabaseService {
     });
   }
 
+  // Делаем список из Snapshot(снимка)
+  List<Brew>? _brewListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc){
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      return Brew(
+        name: data['name'] ?? '',
+        strength: data['strength'] ?? 0,
+        sugars: data['sugars'] ?? '',
+      );
+    }).toList();
+  }
+
   // Получение потока данных brew
-  Stream<QuerySnapshot>? get brews {
+  Stream<List<Brew>?>? get brews {
     // Возвращаем снимок коллекции данных из бд
-    return brewCollection.snapshots();
+    return brewCollection.snapshots()
+      .map(_brewListFromSnapshot);
   }
 
 
