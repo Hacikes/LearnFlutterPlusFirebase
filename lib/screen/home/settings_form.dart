@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:learning_flutter_and_firebase/shared/constant.dart';
 
@@ -19,7 +21,7 @@ class _SettingsFormState extends State<SettingsForm> {
   late String _currentName;
   // Инициализируем сахар сразу, иначе выпадающий список ругается
   String _currentSugars = '0';
-  late int _currentStrength;
+  int _currentStrength = 100;
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +56,16 @@ class _SettingsFormState extends State<SettingsForm> {
               onChanged: (val) => setState(() => _currentSugars = val! ),
             ),
             // Слайдер
+            Slider(
+                activeColor: Colors.brown[_currentStrength ?? 100],
+                inactiveColor: Colors.brown[_currentStrength ?? 100],
+                min: 100.0,
+                max: 900.0,
+                value: (_currentStrength ?? 100).toDouble(),
+                divisions: 8,
+                // round нужно просто для округления
+                onChanged: (val) => setState(() => _currentStrength = val.round()),
+            ),
             SizedBox(height: 10.0),
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
