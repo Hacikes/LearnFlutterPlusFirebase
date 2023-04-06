@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:learning_flutter_and_firebase/models/brew.dart';
+import 'package:learning_flutter_and_firebase/models/user.dart';
 
 
 class DatabaseService {
@@ -33,6 +34,17 @@ class DatabaseService {
     }).toList();
   }
 
+  // Метод получения UserData из снимка(snapshot)
+  UserData _userDataFromSnapshot(DocumentSnapshot snapshot) {
+    return UserData(
+        uid: uid,
+        name: snapshot['name'],
+        sugars: snapshot['sugar'] ,
+        strength: snapshot['strength'],
+    );
+  }
+
+
   // Получение потока данных brew
   Stream<List<Brew>?>? get brews {
     // Возвращаем снимок коллекции данных из бд
@@ -40,6 +52,12 @@ class DatabaseService {
       .map(_brewListFromSnapshot);
   }
 
-
+  // Получение потока информации о пользователе
+  Stream<UserData> get userData {
+    // Когда происходят какие нибудь изменения в данных
+    // мы получаем снимок этих данных
+    return brewCollection.doc(uid).snapshots()
+    .map(_userDataFromSnapshot);
+  }
 
 }
