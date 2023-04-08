@@ -16,7 +16,8 @@ class _BrewListState extends State<BrewList> {
   Widget build(BuildContext context) {
 
     // Получаем снимок
-    final brews = Provider.of<List<Brew?>?>(context);
+    // Получаем пустой массив, дабы убрать ошибку
+    final brews = Provider.of<List<Brew?>?>(context) ?? [];
     //print(brews.docs);
     // Делаем проверку на null, так как без этого СОВСЕМ БЛИН НЕ РАБОТАЕТ
     // когда вызываем эту штуку на экране home АААААААААААААААААААААААААА
