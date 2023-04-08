@@ -20,6 +20,7 @@ class BrewTitle extends StatelessWidget {
             radius: 25.0,
             // фон зависит от крепости
             backgroundColor: Colors.brown[brew?.strength ?? 100],
+            backgroundImage: AssetImage('assets/coffee_icon.png'),
           ),
           title: Text(brew?.name ?? ''),
           subtitle: Text('Takes ${brew?.sugars ?? ''} sugar(s)'),
